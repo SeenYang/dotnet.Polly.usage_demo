@@ -1,0 +1,9 @@
+.idea/
+*.dll
+
+EventBucClient.Tests/bin/
+EventBucClient.Tests/obj/
+EventBusWebApi.Demo/bin/
+EventBusWebApi.Demo/obj/
+EventBusClient.Dummy/obj/
+EventBusClient.Dummy/bin/
