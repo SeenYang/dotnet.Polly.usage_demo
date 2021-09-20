@@ -30,16 +30,19 @@ namespace EventBucClient.Tests
         [Fact]
         public async Task Test1()
         {
-            _policy = StupidPolicyBuilder.GetPolicy(_logger.Object);
-            _service = new StupidService(_logger.Object, _policy, _repo.Object);
             _repo.Setup(repo => repo.ThrowingHttpException()).ThrowsAsync(new HttpRequestException(
                 "Something happen from down stream services.",
                 new Exception("Down Stream Server stupid Exception."),
                 HttpStatusCode.InternalServerError));
 
+            _policy = StupidPolicyBuilder.GetPolicy(_logger.Object);
+            
+            _service = new StupidService(_logger.Object, _policy, _repo.Object);
+
             var exception = await Record.ExceptionAsync(async () =>
             {
-                await _service.HereIsDoingStupidWork("walalalalala;");
+              var result =  await _service.HereIsDoingStupidWork("walalalalala;");
+              Assert.Null(result);
             });
 
             Assert.Null(exception);

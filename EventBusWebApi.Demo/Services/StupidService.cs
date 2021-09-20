@@ -3,10 +3,11 @@ using System.Threading.Tasks;
 using EventBusWebApi.Demo.Repositories;
 using Microsoft.Extensions.Logging;
 using Polly;
+using Polly.Retry;
 
 namespace EventBusWebApi.Demo.Services
 {
-    public class StupidService:IStupidService
+    public class StupidService : IStupidService
     {
         private readonly ILogger<StupidService> _logger;
         private readonly IsPolicy _policy;
@@ -22,8 +23,7 @@ namespace EventBusWebApi.Demo.Services
 
         public async Task<string> HereIsDoingStupidWork(string inputStr)
         {
-            var result = await Policy.Handle<Exception>()
-                .RetryAsync()
+            var result = await ((AsyncRetryPolicy)_policy)
                 .ExecuteAndCaptureAsync(() => _repo.ThrowingHttpException());
 
             return result.Result;

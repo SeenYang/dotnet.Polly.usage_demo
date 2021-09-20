@@ -15,8 +15,6 @@ namespace EventBusClient.Dummy
 
     public class PaymentsClient : IEventBusClient
     {
-
-
         public EventBusResponse DoWork(string inputStr)
         {
             Console.Error.WriteLine($"I'm doing the work. msg: {inputStr}");

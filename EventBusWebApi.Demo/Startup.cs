@@ -101,16 +101,20 @@ namespace EventBusWebApi.Demo
         private static void OnHttpRetry(DelegateResult<HttpResponseMessage> result, TimeSpan timeSpan, int retryCount,
             Context context, ILogger logger)
         {
-            if (result.Result != null)
+            if (result?.Result != null)
             {
-                logger.LogWarning(
-                    "Request failed with {StatusCode}. Waiting {timeSpan} before next retry. Retry attempt {retryCount}",
+                var msg =
+                    $"Request failed with {result.Result.StatusCode}. Waiting {timeSpan} before next retry. Retry attempt {retryCount}";
+                Console.Error.WriteLine(msg);
+                logger.LogWarning(msg,
                     result.Result.StatusCode, timeSpan, retryCount);
             }
             else
             {
-                logger.LogWarning(
-                    "Request failed because network failure. Waiting {timeSpan} before next retry. Retry attempt {retryCount}",
+                var msg =
+                    $"Request failed because network failure. Waiting {timeSpan} before next retry. Retry attempt {retryCount}";
+                Console.Error.WriteLine(msg);
+                logger.LogWarning(msg,
                     timeSpan, retryCount);
             }
         }
